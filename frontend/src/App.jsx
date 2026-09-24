@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Flowchart from './components/Flowchart';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('original')
@@ -40,8 +41,8 @@ export default function App() {
         </div>
         <div style={{ flex: 60, padding: '1rem', display: 'flex', flexDirection: 'column' }}>
           <h2>Flowchart Viewer ({activeTab})</h2>
-          <div style={{ flex: 1, background: '#fff', border: '1px solid #cbd5e1', borderRadius: '4px', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#64748b' }}>
-            React Flow Canvas Placeholder
+          <div style={{ flex: 1, background: '#fff', border: '1px solid #cbd5e1', borderRadius: '4px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+            <Flowchart />
           </div>
         </div>
       </div>
