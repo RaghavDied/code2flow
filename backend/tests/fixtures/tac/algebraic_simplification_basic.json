@@ -1,0 +1,51 @@
+{
+  "functions": {
+    "main": {
+      "name": "main",
+      "params": [
+        "y"
+      ],
+      "instrs": [
+        {
+          "id": 1,
+          "op": "binop",
+          "result": "x",
+          "arg1": "y",
+          "arg2": "1",
+          "operator": "*",
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 2,
+          "src": "x = y * 1"
+        },
+        {
+          "id": 2,
+          "op": "binop",
+          "result": "z",
+          "arg1": "y",
+          "arg2": "0",
+          "operator": "+",
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 3,
+          "src": "z = y + 0"
+        },
+        {
+          "id": 3,
+          "op": "return",
+          "result": null,
+          "arg1": "z",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 4,
+          "src": "return z"
+        }
+      ]
+    }
+  }
+}

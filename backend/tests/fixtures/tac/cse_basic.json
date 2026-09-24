@@ -1,0 +1,65 @@
+{
+  "functions": {
+    "main": {
+      "name": "main",
+      "params": [
+        "a",
+        "b"
+      ],
+      "instrs": [
+        {
+          "id": 1,
+          "op": "binop",
+          "result": "t1",
+          "arg1": "a",
+          "arg2": "b",
+          "operator": "+",
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 2,
+          "src": "t1 = a + b"
+        },
+        {
+          "id": 2,
+          "op": "binop",
+          "result": "t2",
+          "arg1": "a",
+          "arg2": "b",
+          "operator": "+",
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 3,
+          "src": "t2 = a + b"
+        },
+        {
+          "id": 3,
+          "op": "binop",
+          "result": "t3",
+          "arg1": "t1",
+          "arg2": "t2",
+          "operator": "+",
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 4,
+          "src": "t3 = t1 + t2"
+        },
+        {
+          "id": 4,
+          "op": "return",
+          "result": null,
+          "arg1": "t3",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 4,
+          "src": "return t3"
+        }
+      ]
+    }
+  }
+}

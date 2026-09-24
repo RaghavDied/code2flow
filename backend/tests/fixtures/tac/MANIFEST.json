@@ -1,0 +1,107 @@
+[
+  {
+    "file": "constant_folding_basic.json",
+    "description": "int main(){ int t1 = 2*3; return t1; } -- single constant-foldable binop.",
+    "expected_passes": [
+      "constant_folding"
+    ],
+    "expected_outcome": "instr 1 becomes: t1 = 6 (assign). instr 2 unchanged (or const-propagated to return 6 by a later pass)."
+  },
+  {
+    "file": "constant_propagation_basic.json",
+    "description": "x = 5; y = x + 1; return y; -- reaching-definitions constant propagation, then folding.",
+    "expected_passes": [
+      "constant_propagation",
+      "constant_folding"
+    ],
+    "expected_outcome": "instr 2 becomes y = 6 after x is propagated into it and 5+1 is folded."
+  },
+  {
+    "file": "algebraic_simplification_basic.json",
+    "description": "x = y*1; z = y+0; -- identity multiply/add simplify to plain assigns.",
+    "expected_passes": [
+      "algebraic_simplification"
+    ],
+    "expected_outcome": "instr 1 -> x = y (assign). instr 2 -> z = y (assign)."
+  },
+  {
+    "file": "dead_code_basic.json",
+    "description": "int x = 4; is never read before the function returns -- liveness-based dead-code elimination.",
+    "expected_passes": [
+      "dead_code_elimination"
+    ],
+    "expected_outcome": "instr 1 removed entirely (x is not live at instr 2)."
+  },
+  {
+    "file": "unreachable_after_return.json",
+    "description": "Code after an unconditional return is unreachable from the entry node.",
+    "expected_passes": [
+      "unreachable_code_removal"
+    ],
+    "expected_outcome": "instrs 3 and 4 removed (not reachable from B0 in the CFG)."
+  },
+  {
+    "file": "branch_always_true.json",
+    "description": "if (1) always takes the TRUE branch -- branch simplification should collapse the if_false test, and the ELSE block (instrs 5-6) then becomes unreachable code.",
+    "expected_passes": [
+      "branch_simplification",
+      "unreachable_code_removal"
+    ],
+    "expected_outcome": "instr 1-2 replaced by an unconditional goto (or removed), instrs 5-6 (else block) removed."
+  },
+  {
+    "file": "branch_always_false.json",
+    "description": "if (0) never takes the TRUE branch -- the then-block is dead/unreachable.",
+    "expected_passes": [
+      "constant_folding",
+      "branch_simplification",
+      "unreachable_code_removal"
+    ],
+    "expected_outcome": "instr 1 folds to t1 = 0, the if_false becomes an unconditional goto L0, instr 3 (then-block) is removed."
+  },
+  {
+    "file": "combined_worked_example.json",
+    "description": "The worked example from project-doc section 5: a=2*3, b=a+4, unused=99, if(1){printf(b)}else{printf(never)}, return 0. Exercises every core pass together.",
+    "expected_passes": [
+      "constant_folding",
+      "constant_propagation",
+      "dead_code_elimination",
+      "branch_simplification",
+      "unreachable_code_removal"
+    ],
+    "expected_outcome": "a folds to 6, b folds to 10 (constant-propagated), 'unused' is removed (dead), if(1) collapses to its TRUE branch, and the else block (instrs 10-11) is removed as unreachable."
+  },
+  {
+    "file": "loop_with_dead_var.json",
+    "description": "while loop whose body assigns 'junk' every iteration but never reads it -- dead code inside a loop body, and a genuine back edge (instr 8 -> L0) that must NOT be treated as unreachable.",
+    "expected_passes": [
+      "dead_code_elimination"
+    ],
+    "expected_outcome": "instr 5 (junk = 7) removed; loop control flow (instrs 2-4, 6-9) untouched."
+  },
+  {
+    "file": "copy_propagation_basic.json",
+    "description": "Stretch pass: a = b; c = a + 1 -- copy propagation should replace 'a' with 'b' in instr 2, possibly making instr 1 dead afterward.",
+    "expected_passes": [
+      "copy_propagation",
+      "dead_code_elimination"
+    ],
+    "expected_outcome": "instr 2 becomes c = b + 1; instr 1 (a = b) then removable if 'a' is dead everywhere else."
+  },
+  {
+    "file": "cse_basic.json",
+    "description": "Stretch pass: t1 = a+b; t2 = a+b -- same basic block, same operands/operator recomputed. Common subexpression elimination should reuse t1.",
+    "expected_passes": [
+      "common_subexpression_elimination"
+    ],
+    "expected_outcome": "instr 2 becomes t2 = t1 (assign) since a+b was already computed into t1 in the same block."
+  },
+  {
+    "file": "strength_reduction_basic.json",
+    "description": "Stretch pass: x = y * 2 -- multiply by a power of two can be replaced by a cheaper op (y + y).",
+    "expected_passes": [
+      "strength_reduction"
+    ],
+    "expected_outcome": "instr 1 becomes x = y + y (binop with operator '+', arg1=y, arg2=y)."
+  }
+]
