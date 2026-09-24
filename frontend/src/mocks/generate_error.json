@@ -1,0 +1,14 @@
+{
+  "ok": false,
+  "errors": [
+    {
+      "phase": "parser",
+      "severity": "error",
+      "message": "Expected ')' after condition",
+      "line": 3,
+      "col": 12
+    }
+  ],
+  "warnings": [],
+  "data": null
+}

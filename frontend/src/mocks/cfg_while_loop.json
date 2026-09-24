@@ -1,0 +1,15 @@
+{
+  "function": "main",
+  "nodes": [
+    { "id": "B0", "type": "start", "label": "START", "lines": [1], "instr_ids": [], "is_loop_header": false },
+    { "id": "B1", "type": "decision", "label": "x < 10?", "lines": [2], "instr_ids": [1], "is_loop_header": true },
+    { "id": "B2", "type": "process", "label": "x = x + 1;", "lines": [3], "instr_ids": [2], "is_loop_header": false },
+    { "id": "B3", "type": "end", "label": "END", "lines": [5], "instr_ids": [], "is_loop_header": false }
+  ],
+  "edges": [
+    { "source": "B0", "target": "B1", "label": null, "is_back_edge": false },
+    { "source": "B1", "target": "B2", "label": "TRUE", "is_back_edge": false },
+    { "source": "B1", "target": "B3", "label": "FALSE", "is_back_edge": false },
+    { "source": "B2", "target": "B1", "label": null, "is_back_edge": true }
+  ]
+}
