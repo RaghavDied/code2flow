@@ -11,10 +11,10 @@
     },
     {
       "id": "B1",
-      "type": "process",
-      "label": "int i = 0",
+      "type": "io",
+      "label": "scanf(\"%d\", &n)",
       "lines": [
-        2
+        3
       ],
       "instr_ids": [
         1
@@ -24,48 +24,57 @@
     {
       "id": "B2",
       "type": "decision",
-      "label": "i < 3?",
+      "label": "n > 0?",
       "lines": [
-        3
+        4
       ],
       "instr_ids": [
         2,
-        3,
-        4
+        3
       ],
-      "is_loop_header": true
+      "is_loop_header": false
     },
     {
       "id": "B3",
-      "type": "process",
-      "label": "printf(\"%d\", i)\ni++",
+      "type": "io",
+      "label": "printf(\"Positive\")",
       "lines": [
-        4,
         5
       ],
       "instr_ids": [
-        5,
-        6,
-        7,
-        8
+        4,
+        5
       ],
       "is_loop_header": false
     },
     {
       "id": "B4",
-      "type": "process",
-      "label": "return 0",
+      "type": "io",
+      "label": "printf(\"Negative\")",
       "lines": [
         7
       ],
       "instr_ids": [
-        9,
-        10
+        6,
+        7
       ],
       "is_loop_header": false
     },
     {
       "id": "B5",
+      "type": "process",
+      "label": "return 0",
+      "lines": [
+        9
+      ],
+      "instr_ids": [
+        8,
+        9
+      ],
+      "is_loop_header": false
+    },
+    {
+      "id": "B6",
       "type": "end",
       "label": "END",
       "lines": [],
@@ -100,13 +109,19 @@
     },
     {
       "source": "B3",
-      "target": "B2",
+      "target": "B5",
       "label": null,
-      "is_back_edge": true
+      "is_back_edge": false
     },
     {
       "source": "B4",
       "target": "B5",
+      "label": null,
+      "is_back_edge": false
+    },
+    {
+      "source": "B5",
+      "target": "B6",
       "label": null,
       "is_back_edge": false
     }

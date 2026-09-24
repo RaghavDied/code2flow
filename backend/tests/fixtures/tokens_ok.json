@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "data": {
+    "tokens": [
+      {
+        "type": "KW_INT",
+        "lexeme": "int",
+        "line": 1,
+        "col": 1
+      },
+      {
+        "type": "IDENTIFIER",
+        "lexeme": "x",
+        "line": 1,
+        "col": 5
+      },
+      {
+        "type": "ASSIGN",
+        "lexeme": "=",
+        "line": 1,
+        "col": 7
+      },
+      {
+        "type": "INT_LITERAL",
+        "lexeme": "5",
+        "line": 1,
+        "col": 9
+      },
+      {
+        "type": "SEMICOLON",
+        "lexeme": ";",
+        "line": 1,
+        "col": 10
+      },
+      {
+        "type": "EOF",
+        "lexeme": "",
+        "line": 1,
+        "col": 11
+      }
+    ]
+  }
+}
