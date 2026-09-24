@@ -1,0 +1,580 @@
+{
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "data": {
+    "functions": [
+      "main"
+    ],
+    "original": {
+      "tac": {
+        "main": [
+          {
+            "id": 1,
+            "op": "binop",
+            "result": "t1",
+            "arg1": "2",
+            "arg2": "3",
+            "operator": "*",
+            "target": null,
+            "label": null,
+            "args": [],
+            "line": 2,
+            "src": "int a = 2 * 3"
+          },
+          {
+            "id": 2,
+            "op": "assign",
+            "result": "a",
+            "arg1": "t1",
+            "arg2": null,
+            "operator": null,
+            "target": null,
+            "label": null,
+            "args": [],
+            "line": 2,
+            "src": "int a = 2 * 3"
+          },
+          {
+            "id": 3,
+            "op": "binop",
+            "result": "t2",
+            "arg1": "a",
+            "arg2": "4",
+            "operator": "+",
+            "target": null,
+            "label": null,
+            "args": [],
+            "line": 3,
+            "src": "int b = a + 4"
+          },
+          {
+            "id": 4,
+            "op": "assign",
+            "result": "b",
+            "arg1": "t2",
+            "arg2": null,
+            "operator": null,
+            "target": null,
+            "label": null,
+            "args": [],
+            "line": 3,
+            "src": "int b = a + 4"
+          },
+          {
+            "id": 5,
+            "op": "assign",
+            "result": "unused",
+            "arg1": "99",
+            "arg2": null,
+            "operator": null,
+            "target": null,
+            "label": null,
+            "args": [],
+            "line": 4,
+            "src": "int unused = 99"
+          },
+          {
+            "id": 6,
+            "op": "if_false",
+            "result": null,
+            "arg1": "1",
+            "arg2": null,
+            "operator": null,
+            "target": "L0",
+            "label": null,
+            "args": [],
+            "line": 5,
+            "src": "1"
+          },
+          {
+            "id": 7,
+            "op": "call",
+            "result": null,
+            "arg1": "printf",
+            "arg2": null,
+            "operator": null,
+            "target": null,
+            "label": null,
+            "args": [
+              "\"%d\"",
+              "b"
+            ],
+            "line": 5,
+            "src": "printf(\"%d\", b)"
+          },
+          {
+            "id": 8,
+            "op": "goto",
+            "result": null,
+            "arg1": null,
+            "arg2": null,
+            "operator": null,
+            "target": "L1",
+            "label": null,
+            "args": [],
+            "line": 5,
+            "src": ""
+          },
+          {
+            "id": 9,
+            "op": "label",
+            "result": null,
+            "arg1": null,
+            "arg2": null,
+            "operator": null,
+            "target": null,
+            "label": "L0",
+            "args": [],
+            "line": 6,
+            "src": ""
+          },
+          {
+            "id": 10,
+            "op": "call",
+            "result": null,
+            "arg1": "printf",
+            "arg2": null,
+            "operator": null,
+            "target": null,
+            "label": null,
+            "args": [
+              "\"never\""
+            ],
+            "line": 6,
+            "src": "printf(\"never\")"
+          },
+          {
+            "id": 11,
+            "op": "label",
+            "result": null,
+            "arg1": null,
+            "arg2": null,
+            "operator": null,
+            "target": null,
+            "label": "L1",
+            "args": [],
+            "line": 7,
+            "src": ""
+          },
+          {
+            "id": 12,
+            "op": "return",
+            "result": null,
+            "arg1": "0",
+            "arg2": null,
+            "operator": null,
+            "target": null,
+            "label": null,
+            "args": [],
+            "line": 7,
+            "src": "return 0"
+          }
+        ]
+      },
+      "cfg": {
+        "main": {
+          "function": "main",
+          "nodes": [
+            {
+              "id": "B0",
+              "type": "start",
+              "label": "START",
+              "lines": [],
+              "instr_ids": [],
+              "is_loop_header": false
+            },
+            {
+              "id": "B1",
+              "type": "process",
+              "label": "int a = 2 * 3\nint b = a + 4\nint unused = 99",
+              "lines": [
+                2,
+                3,
+                4
+              ],
+              "instr_ids": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "is_loop_header": false
+            },
+            {
+              "id": "B2",
+              "type": "decision",
+              "label": "1?",
+              "lines": [
+                5
+              ],
+              "instr_ids": [
+                6
+              ],
+              "is_loop_header": false
+            },
+            {
+              "id": "B3",
+              "type": "io",
+              "label": "printf(\"%d\", b)",
+              "lines": [
+                5
+              ],
+              "instr_ids": [
+                7,
+                8
+              ],
+              "is_loop_header": false
+            },
+            {
+              "id": "B4",
+              "type": "io",
+              "label": "printf(\"never\")",
+              "lines": [
+                6
+              ],
+              "instr_ids": [
+                9,
+                10
+              ],
+              "is_loop_header": false
+            },
+            {
+              "id": "B5",
+              "type": "process",
+              "label": "return 0",
+              "lines": [
+                7
+              ],
+              "instr_ids": [
+                11,
+                12
+              ],
+              "is_loop_header": false
+            },
+            {
+              "id": "B6",
+              "type": "end",
+              "label": "END",
+              "lines": [],
+              "instr_ids": [],
+              "is_loop_header": false
+            }
+          ],
+          "edges": [
+            {
+              "source": "B0",
+              "target": "B1",
+              "label": null,
+              "is_back_edge": false
+            },
+            {
+              "source": "B1",
+              "target": "B2",
+              "label": null,
+              "is_back_edge": false
+            },
+            {
+              "source": "B2",
+              "target": "B3",
+              "label": "TRUE",
+              "is_back_edge": false
+            },
+            {
+              "source": "B2",
+              "target": "B4",
+              "label": "FALSE",
+              "is_back_edge": false
+            },
+            {
+              "source": "B3",
+              "target": "B5",
+              "label": null,
+              "is_back_edge": false
+            },
+            {
+              "source": "B4",
+              "target": "B5",
+              "label": null,
+              "is_back_edge": false
+            },
+            {
+              "source": "B5",
+              "target": "B6",
+              "label": null,
+              "is_back_edge": false
+            }
+          ]
+        }
+      },
+      "metrics": {
+        "main": {
+          "nodes": 7,
+          "edges": 7,
+          "decisions": 1,
+          "loops": 0,
+          "cyclomatic_complexity": 2
+        }
+      }
+    },
+    "optimized": {
+      "tac": {
+        "main": [
+          {
+            "id": 7,
+            "op": "call",
+            "result": null,
+            "arg1": "printf",
+            "arg2": null,
+            "operator": null,
+            "target": null,
+            "label": null,
+            "args": [
+              "\"%d\"",
+              "10"
+            ],
+            "line": 5,
+            "src": "printf(\"%d\", 10)"
+          },
+          {
+            "id": 12,
+            "op": "return",
+            "result": null,
+            "arg1": "0",
+            "arg2": null,
+            "operator": null,
+            "target": null,
+            "label": null,
+            "args": [],
+            "line": 7,
+            "src": "return 0"
+          }
+        ]
+      },
+      "cfg": {
+        "main": {
+          "function": "main",
+          "nodes": [
+            {
+              "id": "B0",
+              "type": "start",
+              "label": "START",
+              "lines": [],
+              "instr_ids": [],
+              "is_loop_header": false
+            },
+            {
+              "id": "B1",
+              "type": "process",
+              "label": "printf(\"%d\", 10)\nreturn 0",
+              "lines": [
+                5,
+                7
+              ],
+              "instr_ids": [
+                7,
+                12
+              ],
+              "is_loop_header": false
+            },
+            {
+              "id": "B2",
+              "type": "end",
+              "label": "END",
+              "lines": [],
+              "instr_ids": [],
+              "is_loop_header": false
+            }
+          ],
+          "edges": [
+            {
+              "source": "B0",
+              "target": "B1",
+              "label": null,
+              "is_back_edge": false
+            },
+            {
+              "source": "B1",
+              "target": "B2",
+              "label": null,
+              "is_back_edge": false
+            }
+          ]
+        }
+      },
+      "metrics": {
+        "main": {
+          "nodes": 3,
+          "edges": 2,
+          "decisions": 0,
+          "loops": 0,
+          "cyclomatic_complexity": 1
+        }
+      }
+    },
+    "log": [
+      {
+        "pass_name": "constant_folding",
+        "function": "main",
+        "line": 2,
+        "instr_id": 1,
+        "action": "replaced",
+        "before": "t1 = 2 * 3",
+        "after": "t1 = 6"
+      },
+      {
+        "pass_name": "constant_propagation",
+        "function": "main",
+        "line": 2,
+        "instr_id": 2,
+        "action": "replaced",
+        "before": "a = t1",
+        "after": "a = 6"
+      },
+      {
+        "pass_name": "constant_propagation",
+        "function": "main",
+        "line": 3,
+        "instr_id": 3,
+        "action": "replaced",
+        "before": "t2 = a + 4",
+        "after": "t2 = 6 + 4"
+      },
+      {
+        "pass_name": "constant_folding",
+        "function": "main",
+        "line": 3,
+        "instr_id": 3,
+        "action": "replaced",
+        "before": "t2 = 6 + 4",
+        "after": "t2 = 10"
+      },
+      {
+        "pass_name": "constant_propagation",
+        "function": "main",
+        "line": 3,
+        "instr_id": 4,
+        "action": "replaced",
+        "before": "b = t2",
+        "after": "b = 10"
+      },
+      {
+        "pass_name": "constant_propagation",
+        "function": "main",
+        "line": 5,
+        "instr_id": 7,
+        "action": "replaced",
+        "before": "call printf(\"%d\", b)",
+        "after": "call printf(\"%d\", 10)"
+      },
+      {
+        "pass_name": "branch_simplification",
+        "function": "main",
+        "line": 5,
+        "instr_id": 6,
+        "action": "removed",
+        "before": "if !1 goto L0",
+        "after": "(removed)"
+      },
+      {
+        "pass_name": "dead_code_elimination",
+        "function": "main",
+        "line": 2,
+        "instr_id": 1,
+        "action": "removed",
+        "before": "t1 = 6",
+        "after": "(removed)"
+      },
+      {
+        "pass_name": "dead_code_elimination",
+        "function": "main",
+        "line": 2,
+        "instr_id": 2,
+        "action": "removed",
+        "before": "a = 6",
+        "after": "(removed)"
+      },
+      {
+        "pass_name": "dead_code_elimination",
+        "function": "main",
+        "line": 3,
+        "instr_id": 3,
+        "action": "removed",
+        "before": "t2 = 10",
+        "after": "(removed)"
+      },
+      {
+        "pass_name": "dead_code_elimination",
+        "function": "main",
+        "line": 3,
+        "instr_id": 4,
+        "action": "removed",
+        "before": "b = 10",
+        "after": "(removed)"
+      },
+      {
+        "pass_name": "dead_code_elimination",
+        "function": "main",
+        "line": 4,
+        "instr_id": 5,
+        "action": "removed",
+        "before": "unused = 99",
+        "after": "(removed)"
+      },
+      {
+        "pass_name": "branch_simplification",
+        "function": "main",
+        "line": 5,
+        "instr_id": 8,
+        "action": "removed",
+        "before": "goto L1",
+        "after": "(removed)"
+      },
+      {
+        "pass_name": "unreachable_code_removal",
+        "function": "main",
+        "line": 6,
+        "instr_id": 9,
+        "action": "removed",
+        "before": "L0:",
+        "after": "(removed)"
+      },
+      {
+        "pass_name": "unreachable_code_removal",
+        "function": "main",
+        "line": 6,
+        "instr_id": 10,
+        "action": "removed",
+        "before": "call printf(\"never\")",
+        "after": "(removed)"
+      },
+      {
+        "pass_name": "unreachable_code_removal",
+        "function": "main",
+        "line": 7,
+        "instr_id": 11,
+        "action": "removed",
+        "before": "L1:",
+        "after": "(removed)"
+      }
+    ],
+    "optimized_c": "int main() {\n    printf(\"%d\", 10);\n    return 0;\n}\n",
+    "warnings_dead_code": [
+      {
+        "phase": "semantic",
+        "severity": "warning",
+        "message": "Variable 'unused' is assigned but never used",
+        "line": 4,
+        "col": 9
+      },
+      {
+        "phase": "semantic",
+        "severity": "warning",
+        "message": "Unreachable code: printf(\"never\")",
+        "line": 6,
+        "col": 14
+      }
+    ]
+  }
+}

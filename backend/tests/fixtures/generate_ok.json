@@ -1,0 +1,432 @@
+{
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "data": {
+    "functions": [
+      "main"
+    ],
+    "ast": {
+      "type": "Program",
+      "line": 1,
+      "col": 1,
+      "functions": [
+        {
+          "type": "Function",
+          "line": 1,
+          "col": 1,
+          "name": "main",
+          "return_type": "int",
+          "params": [],
+          "body": {
+            "type": "Block",
+            "line": 1,
+            "col": 12,
+            "statements": [
+              {
+                "type": "VarDecl",
+                "line": 2,
+                "col": 5,
+                "var_type": "int",
+                "name": "n",
+                "array_size": null,
+                "init": null
+              },
+              {
+                "type": "ExprStmt",
+                "line": 3,
+                "col": 5,
+                "expr": {
+                  "type": "Call",
+                  "line": 3,
+                  "col": 5,
+                  "name": "scanf",
+                  "args": [
+                    {
+                      "type": "Literal",
+                      "line": 3,
+                      "col": 11,
+                      "value": "\"%d\"",
+                      "literal_type": "string"
+                    },
+                    {
+                      "type": "UnaryOp",
+                      "line": 3,
+                      "col": 17,
+                      "op": "&",
+                      "operand": {
+                        "type": "Identifier",
+                        "line": 3,
+                        "col": 18,
+                        "name": "n"
+                      },
+                      "postfix": false
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "If",
+                "line": 4,
+                "col": 5,
+                "cond": {
+                  "type": "BinaryOp",
+                  "line": 4,
+                  "col": 9,
+                  "op": ">",
+                  "left": {
+                    "type": "Identifier",
+                    "line": 4,
+                    "col": 9,
+                    "name": "n"
+                  },
+                  "right": {
+                    "type": "Literal",
+                    "line": 4,
+                    "col": 13,
+                    "value": "0",
+                    "literal_type": "int"
+                  }
+                },
+                "then": {
+                  "type": "Block",
+                  "line": 4,
+                  "col": 16,
+                  "statements": [
+                    {
+                      "type": "ExprStmt",
+                      "line": 5,
+                      "col": 9,
+                      "expr": {
+                        "type": "Call",
+                        "line": 5,
+                        "col": 9,
+                        "name": "printf",
+                        "args": [
+                          {
+                            "type": "Literal",
+                            "line": 5,
+                            "col": 16,
+                            "value": "\"Positive\"",
+                            "literal_type": "string"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "else": {
+                  "type": "Block",
+                  "line": 6,
+                  "col": 12,
+                  "statements": [
+                    {
+                      "type": "ExprStmt",
+                      "line": 7,
+                      "col": 9,
+                      "expr": {
+                        "type": "Call",
+                        "line": 7,
+                        "col": 9,
+                        "name": "printf",
+                        "args": [
+                          {
+                            "type": "Literal",
+                            "line": 7,
+                            "col": 16,
+                            "value": "\"Negative\"",
+                            "literal_type": "string"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Return",
+                "line": 9,
+                "col": 5,
+                "value": {
+                  "type": "Literal",
+                  "line": 9,
+                  "col": 12,
+                  "value": "0",
+                  "literal_type": "int"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "tac": {
+      "main": [
+        {
+          "id": 1,
+          "op": "call",
+          "result": null,
+          "arg1": "scanf",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [
+            "\"%d\"",
+            "&n"
+          ],
+          "line": 3,
+          "src": "scanf(\"%d\", &n)"
+        },
+        {
+          "id": 2,
+          "op": "binop",
+          "result": "t1",
+          "arg1": "n",
+          "arg2": "0",
+          "operator": ">",
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 4,
+          "src": "n > 0"
+        },
+        {
+          "id": 3,
+          "op": "if_false",
+          "result": null,
+          "arg1": "t1",
+          "arg2": null,
+          "operator": null,
+          "target": "L0",
+          "label": null,
+          "args": [],
+          "line": 4,
+          "src": "n > 0"
+        },
+        {
+          "id": 4,
+          "op": "call",
+          "result": null,
+          "arg1": "printf",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [
+            "\"Positive\""
+          ],
+          "line": 5,
+          "src": "printf(\"Positive\")"
+        },
+        {
+          "id": 5,
+          "op": "goto",
+          "result": null,
+          "arg1": null,
+          "arg2": null,
+          "operator": null,
+          "target": "L1",
+          "label": null,
+          "args": [],
+          "line": 5,
+          "src": ""
+        },
+        {
+          "id": 6,
+          "op": "label",
+          "result": null,
+          "arg1": null,
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": "L0",
+          "args": [],
+          "line": 7,
+          "src": ""
+        },
+        {
+          "id": 7,
+          "op": "call",
+          "result": null,
+          "arg1": "printf",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [
+            "\"Negative\""
+          ],
+          "line": 7,
+          "src": "printf(\"Negative\")"
+        },
+        {
+          "id": 8,
+          "op": "label",
+          "result": null,
+          "arg1": null,
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": "L1",
+          "args": [],
+          "line": 9,
+          "src": ""
+        },
+        {
+          "id": 9,
+          "op": "return",
+          "result": null,
+          "arg1": "0",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 9,
+          "src": "return 0"
+        }
+      ]
+    },
+    "cfg": {
+      "main": {
+        "function": "main",
+        "nodes": [
+          {
+            "id": "B0",
+            "type": "start",
+            "label": "START",
+            "lines": [],
+            "instr_ids": [],
+            "is_loop_header": false
+          },
+          {
+            "id": "B1",
+            "type": "io",
+            "label": "scanf(\"%d\", &n)",
+            "lines": [
+              3
+            ],
+            "instr_ids": [
+              1
+            ],
+            "is_loop_header": false
+          },
+          {
+            "id": "B2",
+            "type": "decision",
+            "label": "n > 0?",
+            "lines": [
+              4
+            ],
+            "instr_ids": [
+              2,
+              3
+            ],
+            "is_loop_header": false
+          },
+          {
+            "id": "B3",
+            "type": "io",
+            "label": "printf(\"Positive\")",
+            "lines": [
+              5
+            ],
+            "instr_ids": [
+              4,
+              5
+            ],
+            "is_loop_header": false
+          },
+          {
+            "id": "B4",
+            "type": "io",
+            "label": "printf(\"Negative\")",
+            "lines": [
+              7
+            ],
+            "instr_ids": [
+              6,
+              7
+            ],
+            "is_loop_header": false
+          },
+          {
+            "id": "B5",
+            "type": "process",
+            "label": "return 0",
+            "lines": [
+              9
+            ],
+            "instr_ids": [
+              8,
+              9
+            ],
+            "is_loop_header": false
+          },
+          {
+            "id": "B6",
+            "type": "end",
+            "label": "END",
+            "lines": [],
+            "instr_ids": [],
+            "is_loop_header": false
+          }
+        ],
+        "edges": [
+          {
+            "source": "B0",
+            "target": "B1",
+            "label": null,
+            "is_back_edge": false
+          },
+          {
+            "source": "B1",
+            "target": "B2",
+            "label": null,
+            "is_back_edge": false
+          },
+          {
+            "source": "B2",
+            "target": "B3",
+            "label": "TRUE",
+            "is_back_edge": false
+          },
+          {
+            "source": "B2",
+            "target": "B4",
+            "label": "FALSE",
+            "is_back_edge": false
+          },
+          {
+            "source": "B3",
+            "target": "B5",
+            "label": null,
+            "is_back_edge": false
+          },
+          {
+            "source": "B4",
+            "target": "B5",
+            "label": null,
+            "is_back_edge": false
+          },
+          {
+            "source": "B5",
+            "target": "B6",
+            "label": null,
+            "is_back_edge": false
+          }
+        ]
+      }
+    },
+    "metrics": {
+      "main": {
+        "nodes": 7,
+        "edges": 7,
+        "decisions": 1,
+        "loops": 0,
+        "cyclomatic_complexity": 2
+      }
+    }
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "function": "main",
+  "nodes": [
+    {
+      "id": "B0",
+      "type": "start",
+      "label": "START",
+      "lines": [],
+      "instr_ids": [],
+      "is_loop_header": false
+    },
+    {
+      "id": "B1",
+      "type": "io",
+      "label": "scanf(\"%d\", &n)",
+      "lines": [
+        3
+      ],
+      "instr_ids": [
+        1
+      ],
+      "is_loop_header": false
+    },
+    {
+      "id": "B2",
+      "type": "decision",
+      "label": "n > 0?",
+      "lines": [
+        4
+      ],
+      "instr_ids": [
+        2,
+        3
+      ],
+      "is_loop_header": false
+    },
+    {
+      "id": "B3",
+      "type": "io",
+      "label": "printf(\"Positive\")",
+      "lines": [
+        5
+      ],
+      "instr_ids": [
+        4,
+        5
+      ],
+      "is_loop_header": false
+    },
+    {
+      "id": "B4",
+      "type": "io",
+      "label": "printf(\"Negative\")",
+      "lines": [
+        7
+      ],
+      "instr_ids": [
+        6,
+        7
+      ],
+      "is_loop_header": false
+    },
+    {
+      "id": "B5",
+      "type": "process",
+      "label": "return 0",
+      "lines": [
+        9
+      ],
+      "instr_ids": [
+        8,
+        9
+      ],
+      "is_loop_header": false
+    },
+    {
+      "id": "B6",
+      "type": "end",
+      "label": "END",
+      "lines": [],
+      "instr_ids": [],
+      "is_loop_header": false
+    }
+  ],
+  "edges": [
+    {
+      "source": "B0",
+      "target": "B1",
+      "label": null,
+      "is_back_edge": false
+    },
+    {
+      "source": "B1",
+      "target": "B2",
+      "label": null,
+      "is_back_edge": false
+    },
+    {
+      "source": "B2",
+      "target": "B3",
+      "label": "TRUE",
+      "is_back_edge": false
+    },
+    {
+      "source": "B2",
+      "target": "B4",
+      "label": "FALSE",
+      "is_back_edge": false
+    },
+    {
+      "source": "B3",
+      "target": "B5",
+      "label": null,
+      "is_back_edge": false
+    },
+    {
+      "source": "B4",
+      "target": "B5",
+      "label": null,
+      "is_back_edge": false
+    },
+    {
+      "source": "B5",
+      "target": "B6",
+      "label": null,
+      "is_back_edge": false
+    }
+  ]
+}
