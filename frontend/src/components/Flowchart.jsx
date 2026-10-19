@@ -1,12 +1,33 @@
 import React from 'react';
 import ReactFlow, { Background, Controls, MiniMap } from 'reactflow';
 import 'reactflow/dist/style.css';
+import FlowNode from './FlowNode';
 
-// Simple default nodes and edges for testing the flowchart view
+// Register custom node types
+const nodeTypes = {
+  flowNode: FlowNode,
+};
+
+// Test nodes using the custom 'flowNode' type
 const initialNodes = [
-  { id: 'B0', position: { x: 250, y: 0 }, data: { label: 'START' }, type: 'input' },
-  { id: 'B1', position: { x: 250, y: 100 }, data: { label: 'int x = 5;' } },
-  { id: 'B2', position: { x: 250, y: 200 }, data: { label: 'END' }, type: 'output' },
+  { 
+    id: 'B0', 
+    type: 'flowNode', 
+    position: { x: 250, y: 0 }, 
+    data: { type: 'start', label: 'START' } 
+  },
+  { 
+    id: 'B1', 
+    type: 'flowNode', 
+    position: { x: 250, y: 100 }, 
+    data: { type: 'process', label: 'int x = 5;' } 
+  },
+  { 
+    id: 'B2', 
+    type: 'flowNode', 
+    position: { x: 250, y: 200 }, 
+    data: { type: 'end', label: 'END' } 
+  },
 ];
 
 const initialEdges = [
@@ -20,6 +41,7 @@ export default function Flowchart() {
       <ReactFlow
         nodes={initialNodes}
         edges={initialEdges}
+        nodeTypes={nodeTypes}
         fitView
       >
         <Background variant="dots" gap={12} size={1} />
