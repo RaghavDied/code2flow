@@ -103,5 +103,11 @@
       "strength_reduction"
     ],
     "expected_outcome": "instr 1 becomes x = y + y (binop with operator '+', arg1=y, arg2=y)."
+  },
+  {
+    "file": "io_scanf_basic.json",
+    "description": "scanf(\"%d\", &x); y = x*2; printf(\"%d\", y); -- exercises the interpreter's scanf/printf I/O handling.",
+    "expected_passes": [],
+    "expected_outcome": "Not an optimisation fixture -- used by the TAC interpreter tests to prove scanf reads from `inputs` and printf's formatted output is captured correctly."
   }
 ]

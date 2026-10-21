@@ -25,10 +25,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-try:
-    from c2f.ir import TacFunction, TacInstr, is_literal  # type: ignore
-except ImportError:  # pragma: no cover - c2f.ir not landed yet, see _tac_contract_stub
-    from c2f.optimizer._tac_contract_stub import TacFunction, TacInstr, is_literal
+from c2f.ir import TacFunction, TacInstr, is_literal
 
 # A "definition" for reaching-definitions purposes: which instr id assigned which variable.
 Definition = tuple[str, int]  # (var_name, defining_instr_id)

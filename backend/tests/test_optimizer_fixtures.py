@@ -102,5 +102,5 @@ def test_manifest_lists_every_fixture(manifest):
     assert manifest_files == disk_files
     for entry in manifest:
         assert entry["description"]
-        assert entry["expected_passes"]
+        assert isinstance(entry["expected_passes"], list)  # [] is valid for non-pass fixtures (e.g. I/O-only)
         assert entry["expected_outcome"]

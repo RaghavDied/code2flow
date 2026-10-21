@@ -16,7 +16,7 @@ from c2f.optimizer.dataflow import (
     predecessors,
     successors,
 )
-from c2f.optimizer._tac_contract_stub import load_tac_program
+from _fixture_loader import load_tac_program
 
 FIXTURES = pathlib.Path(__file__).parent / "fixtures" / "tac"
 
