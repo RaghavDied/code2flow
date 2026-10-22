@@ -12,6 +12,8 @@ from pathlib import Path
 from typing import List, Optional
 
 from c2f.common import Diagnostic, make_error
+from c2f.lexer import tokenize
+from c2f.syntax import parse, ast_to_dict
 
 USE_MOCKS = True
 _FIXTURES = Path(__file__).resolve().parents[1] / "tests" / "fixtures"
@@ -48,18 +50,54 @@ def _mock_gate(source: str) -> Optional[dict]:
     return None
 
 
+
+
 def run_tokens(source: str) -> dict:
-    """POST /api/tokens."""
-    if USE_MOCKS:
-        return _mock_gate(source) or _load("tokens_ok")
-    raise NotImplementedError("real lexer pipeline not wired yet")
+    """POST /api/tokens: return real lexer output and reject invalid syntax."""
+    result = tokenize(source)
+
+    if result.errors:
+        return make_envelope(errors=result.errors)
+
+    tokens = [
+        {
+            "type": token.type.value,
+            "lexeme": token.lexeme,
+            "line": token.line,
+            "col": token.col,
+        }
+        for token in result.tokens
+    ]
+
+    # Existing API tests require malformed C syntax to return an error envelope.
+    parse_result = parse(result.tokens)
+    if parse_result.errors:
+        return make_envelope(errors=parse_result.errors)
+
+    return make_envelope(data={"tokens": tokens})
+
 
 
 def run_ast(source: str) -> dict:
-    """POST /api/ast."""
-    if USE_MOCKS:
-        return _mock_gate(source) or _load("ast_ok")
-    raise NotImplementedError("real parser pipeline not wired yet")
+    """POST /api/ast: return real lexer and parser output."""
+    lex_result = tokenize(source)
+
+    if lex_result.errors:
+        return make_envelope(errors=lex_result.errors)
+
+    parse_result = parse(lex_result.tokens)
+
+    if parse_result.errors:
+        return make_envelope(errors=parse_result.errors)
+
+    if parse_result.ast is None:
+        return make_envelope([
+            make_error("parser", "Parser did not produce an AST", 1, 1)
+        ])
+
+    return make_envelope(
+        data={"ast": ast_to_dict(parse_result.ast)},
+    )
 
 
 def run_pipeline(source: str, optimize: bool = False) -> dict:
