@@ -4,7 +4,7 @@ Owner: Raghav (test_ir_*.py).
 """
 import pytest
 from c2f.ir import generate_tac, is_literal
-from c2f.semantic.ast_nodes import (
+from c2f.syntax import (
     ArrayAccess,
     Assign,
     BinaryOp,

@@ -11,8 +11,7 @@ from dataclasses import dataclass, field
 from typing import List, Optional
 
 from c2f.common import Diagnostic, make_error, make_warning
-
-from .ast_nodes import (
+from c2f.syntax import (
     ArrayAccess,
     Assign,
     BinaryOp,

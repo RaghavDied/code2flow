@@ -9,7 +9,7 @@ from c2f.cfg.dominators import compute_dominators, compute_immediate_dominators
 from c2f.cfg.loops import find_back_edges
 from c2f.ir import TacFunction, TacInstr, generate_tac
 from c2f.metrics import compute_metrics
-from c2f.semantic.ast_nodes import (
+from c2f.syntax import (
     BinaryOp,
     Block,
     Call,

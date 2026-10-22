@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional
 
-from c2f.semantic.ast_nodes import (
+from c2f.syntax import (
     ArrayAccess,
     Assign,
     BinaryOp,

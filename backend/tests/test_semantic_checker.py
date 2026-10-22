@@ -4,7 +4,7 @@ Owner: Raghav (test_semantic_*.py).
 """
 import pytest
 from c2f.semantic import analyze
-from c2f.semantic.ast_nodes import (
+from c2f.syntax import (
     ArrayAccess,
     Assign,
     BinaryOp,
