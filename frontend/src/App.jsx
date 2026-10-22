@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Flowchart from './components/Flowchart';
 import Toolbar from './components/Toolbar';
 import ErrorPanel from './components/ErrorPanel';
@@ -28,6 +28,20 @@ const tabStyle = (active) => ({
   padding: '0.4rem 0.8rem',
   borderRadius: '4px',
   cursor: 'pointer',
+  fontWeight: '500',
+  fontSize: '13px',
+});
+
+const presetBtnStyle = (active) => ({
+  background: active ? '#0284c7' : '#334155',
+  color: active ? '#ffffff' : '#cbd5e1',
+  border: active ? '1px solid #38bdf8' : '1px solid #475569',
+  padding: '0.25rem 0.6rem',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontSize: '11px',
+  fontWeight: '600',
+  transition: 'all 0.15s',
 });
 
 const fnTabStyle = (active) => ({
@@ -62,8 +76,53 @@ export default function App() {
   const [errors, setErrors] = useState([]);
   const [warnings, setWarnings] = useState([]);
 
+  // Panel sizing states (% of total width)
+  const [leftWidth, setLeftWidth] = useState(28); // Editor % width
+  const [rightWidth, setRightWidth] = useState(28); // Inspector % width
+  const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
+  const [isRightCollapsed, setIsRightCollapsed] = useState(false);
+
+  // Dragging states
+  const [isDraggingLeft, setIsDraggingLeft] = useState(false);
+  const [isDraggingRight, setIsDraggingRight] = useState(false);
+
   // Ignore responses from older requests if the user clicks again quickly.
   const requestId = useRef(0);
+
+  // Mouse drag listeners for resizable dividers
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const totalWidth = window.innerWidth;
+      if (isDraggingLeft) {
+        const newPercent = Math.max(12, Math.min(50, (e.clientX / totalWidth) * 100));
+        setLeftWidth(newPercent);
+        setIsLeftCollapsed(false);
+      } else if (isDraggingRight) {
+        const newPercent = Math.max(12, Math.min(45, ((totalWidth - e.clientX) / totalWidth) * 100));
+        setRightWidth(newPercent);
+        setIsRightCollapsed(false);
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsDraggingLeft(false);
+      setIsDraggingRight(false);
+      document.body.style.cursor = 'default';
+      document.body.style.userSelect = 'auto';
+    };
+
+    if (isDraggingLeft || isDraggingRight) {
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDraggingLeft, isDraggingRight]);
 
   const clearOutput = () => {
     setResult(EMPTY_RESULT);
@@ -72,7 +131,7 @@ export default function App() {
   };
 
   const showFailure = (res, fallbackMessage) => {
-    clearOutput(); // never leave a stale flowchart next to an error
+    clearOutput();
     if (res && res.errors && res.errors.length > 0) {
       setErrors(res.errors);
       setWarnings(res.warnings || []);
@@ -150,32 +209,150 @@ export default function App() {
   const optimizedGraph = forFn(result.optimizedCfg, activeFn);
   const showOptimized = viewMode === 'optimized';
 
+  const effectiveLeftWidth = isLeftCollapsed ? 0 : leftWidth;
+  const effectiveRightWidth = isRightCollapsed ? 0 : rightWidth;
+  const currentFcPercent = 100 - effectiveLeftWidth - effectiveRightWidth;
+
   return (
     <div style={{ fontFamily: 'sans-serif', height: '100vh', display: 'flex', flexDirection: 'column', margin: 0, padding: 0 }}>
       {/* Top Header */}
-      <header style={{ background: '#1e293b', color: '#fff', padding: '0.75rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ margin: 0, fontSize: '1.25rem' }}>Code2Flow: Compiler-Based Code-to-Flowchart Generator</h1>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <button style={tabStyle(viewMode === 'original')} onClick={() => setViewMode('original')}>Original</button>
-          <button style={tabStyle(viewMode === 'optimized')} onClick={() => setViewMode('optimized')}>Optimised</button>
-          <button style={tabStyle(viewMode === 'sidebyside')} onClick={() => setViewMode('sidebyside')}>Side-by-Side</button>
+      <header
+        style={{
+          background: '#1e293b',
+          color: '#fff',
+          padding: '0.65rem 1rem',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
+        }}
+      >
+        <h1 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 600, letterSpacing: '-0.01em' }}>
+          Code2Flow: Compiler-Based Code-to-Flowchart Generator with Code Optimisation
+        </h1>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          {/* Flowchart Area Resizer & Presets */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: '#0f172a', padding: '0.25rem 0.6rem', borderRadius: '6px' }}>
+            <span style={{ color: '#94a3b8', fontSize: '12px', fontWeight: 'bold' }}>Flowchart:</span>
+            <input
+              type="range"
+              min="30"
+              max="80"
+              value={Math.round(currentFcPercent)}
+              onChange={(e) => {
+                const targetFc = Number(e.target.value);
+                const remaining = 100 - targetFc;
+                setLeftWidth(Math.round(remaining * 0.55));
+                setRightWidth(Math.round(remaining * 0.45));
+                setIsLeftCollapsed(false);
+                setIsRightCollapsed(false);
+              }}
+              style={{ width: '85px', cursor: 'pointer', accentColor: '#38bdf8' }}
+              title="Slide to dynamically expand or contract the flowchart viewport"
+            />
+            <span style={{ color: '#38bdf8', fontSize: '11px', fontWeight: 'bold', minWidth: '32px' }}>
+              {Math.round(currentFcPercent)}%
+            </span>
+
+            <div style={{ display: 'flex', gap: '0.25rem', marginLeft: '0.3rem' }}>
+              <button
+                style={presetBtnStyle(currentFcPercent < 55 && !isRightCollapsed && !isLeftCollapsed)}
+                onClick={() => {
+                  setLeftWidth(28);
+                  setRightWidth(28);
+                  setIsLeftCollapsed(false);
+                  setIsRightCollapsed(false);
+                }}
+                title="Balanced layout (28% editor, 44% flowchart, 28% inspector)"
+              >
+                Default
+              </button>
+              <button
+                style={presetBtnStyle(currentFcPercent >= 55 && currentFcPercent < 75 && !isRightCollapsed)}
+                onClick={() => {
+                  setLeftWidth(20);
+                  setRightWidth(18);
+                  setIsLeftCollapsed(false);
+                  setIsRightCollapsed(false);
+                }}
+                title="Wide flowchart view (62% flowchart, 20% editor, 18% inspector)"
+              >
+                Wide
+              </button>
+              <button
+                style={presetBtnStyle(isRightCollapsed)}
+                onClick={() => {
+                  setLeftWidth(18);
+                  setIsLeftCollapsed(false);
+                  setIsRightCollapsed(true);
+                }}
+                title="Maximized flowchart view (82% flowchart, inspector collapsed)"
+              >
+                Max Focus
+              </button>
+            </div>
+          </div>
+
+          {/* View Mode Tabs */}
+          <div style={{ display: 'flex', gap: '0.35rem' }}>
+            <button style={tabStyle(viewMode === 'original')} onClick={() => setViewMode('original')}>Original</button>
+            <button style={tabStyle(viewMode === 'optimized')} onClick={() => setViewMode('optimized')}>Optimised</button>
+            <button style={tabStyle(viewMode === 'sidebyside')} onClick={() => setViewMode('sidebyside')}>Side-by-Side</button>
+          </div>
         </div>
       </header>
 
       {/* Main Workspace */}
-      <div style={{ flex: 1, display: 'flex', overflow: 'hidden', background: '#f8fafc' }}>
+      <div style={{ flex: 1, display: 'flex', overflow: 'hidden', background: '#f8fafc', position: 'relative' }}>
         {/* Left Column: Toolbar, Editor, Errors */}
-        <div style={{ width: '32%', borderRight: '1px solid #cbd5e1', display: 'flex', flexDirection: 'column' }}>
-          <Toolbar onGenerate={handleGenerate} onOptimize={handleOptimize} isLoading={isLoading} />
-          <div style={{ flex: 1, padding: '0.5rem', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-            <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '14px', color: '#334155' }}>C Source Code Editor</h3>
-            <CodeEditor value={code} onChange={setCode} />
+        {!isLeftCollapsed && (
+          <div
+            style={{
+              width: `${leftWidth}%`,
+              display: 'flex',
+              flexDirection: 'column',
+              minWidth: '220px',
+              maxWidth: '50%',
+              background: '#f8fafc',
+            }}
+          >
+            <Toolbar onGenerate={handleGenerate} onOptimize={handleOptimize} isLoading={isLoading} />
+            <div style={{ flex: 1, padding: '0.5rem', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                <h3 style={{ margin: 0, fontSize: '13px', color: '#334155' }}>C Source Code Editor</h3>
+                <span style={{ fontSize: '11px', color: '#64748b' }}>({Math.round(leftWidth)}% width)</span>
+              </div>
+              <CodeEditor value={code} onChange={setCode} />
+            </div>
+            <ErrorPanel errors={errors} warnings={warnings} />
           </div>
-          <ErrorPanel errors={errors} warnings={warnings} />
+        )}
+
+        {/* Left Resizer Splitter */}
+        <div
+          onMouseDown={() => setIsDraggingLeft(true)}
+          style={{
+            width: '6px',
+            cursor: 'col-resize',
+            background: isDraggingLeft ? '#3b82f6' : '#cbd5e1',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'background 0.15s',
+            zIndex: 10,
+            userSelect: 'none',
+          }}
+          title="Drag to resize Editor / Flowchart. Double click to toggle."
+          onDoubleClick={() => setIsLeftCollapsed(!isLeftCollapsed)}
+        >
+          <div style={{ width: '2px', height: '24px', background: isDraggingLeft ? '#ffffff' : '#64748b', borderRadius: '1px' }} />
         </div>
 
         {/* Middle Column: Function tabs + Flowcharts */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: '#ffffff' }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: '#ffffff', minWidth: '300px' }}>
           {result.functions.length > 0 && (
             <div style={{ display: 'flex', borderBottom: '1px solid #cbd5e1', background: '#f8fafc' }}>
               {result.functions.map((fn) => (
@@ -204,7 +381,7 @@ export default function App() {
           ) : (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
               <div style={{ ...panelHeader, borderBottom: '1px solid #cbd5e1' }}>
-                Flowchart View ({viewMode})
+                Flowchart View ({viewMode === 'optimized' ? 'Optimised' : 'Original'})
               </div>
               <div style={{ flex: 1 }}>
                 <Flowchart
@@ -218,16 +395,68 @@ export default function App() {
           )}
         </div>
 
-        {/* Right Column: Inspector SidePanel */}
-        <div style={{ width: '30%' }}>
-          <SidePanel
-            tokens={result.tokens}
-            ast={result.ast}
-            tac={showOptimized ? result.optimizedTac : result.tac}
-            log={result.optLog}
-            metrics={showOptimized ? result.optimizedMetrics : result.metrics}
-          />
+        {/* Right Resizer Splitter */}
+        <div
+          onMouseDown={() => setIsDraggingRight(true)}
+          style={{
+            width: '6px',
+            cursor: 'col-resize',
+            background: isDraggingRight ? '#3b82f6' : '#cbd5e1',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'background 0.15s',
+            zIndex: 10,
+            userSelect: 'none',
+          }}
+          title="Drag to resize Flowchart / Inspector. Double click to collapse."
+          onDoubleClick={() => setIsRightCollapsed(!isRightCollapsed)}
+        >
+          <div style={{ width: '2px', height: '24px', background: isDraggingRight ? '#ffffff' : '#64748b', borderRadius: '1px' }} />
         </div>
+
+        {/* Right Column: Inspector SidePanel */}
+        {!isRightCollapsed ? (
+          <div
+            style={{
+              width: `${rightWidth}%`,
+              minWidth: '240px',
+              maxWidth: '45%',
+              display: 'flex',
+              flexDirection: 'column',
+              background: '#ffffff',
+            }}
+          >
+            <SidePanel
+              tokens={result.tokens}
+              ast={result.ast}
+              tac={showOptimized ? result.optimizedTac : result.tac}
+              log={result.optLog}
+              metrics={showOptimized ? result.optimizedMetrics : result.metrics}
+            />
+          </div>
+        ) : (
+          <div
+            onClick={() => setIsRightCollapsed(false)}
+            style={{
+              writingMode: 'vertical-rl',
+              textOrientation: 'mixed',
+              background: '#f1f5f9',
+              borderLeft: '1px solid #cbd5e1',
+              color: '#64748b',
+              padding: '1rem 0.35rem',
+              cursor: 'pointer',
+              fontSize: '11px',
+              fontWeight: 'bold',
+              display: 'flex',
+              alignItems: 'center',
+              letterSpacing: '0.05em',
+            }}
+            title="Click to expand Inspector panel"
+          >
+            ◀ Open Inspector ({result.optLog.length > 0 ? `${result.optLog.length} Opts` : 'SidePanel'})
+          </div>
+        )}
       </div>
     </div>
   );
