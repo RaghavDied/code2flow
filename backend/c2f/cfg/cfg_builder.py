@@ -182,7 +182,22 @@ def _format_label(instrs: List[TacInstr], node_type: str) -> str:
         if has_non_temp and i.result and is_temp(i.result):
             continue
         if i.op == "return":
-            s = f"return {i.arg1}" if i.arg1 is not None else "return"
+
+            if i.arg1 is not None and is_literal(i.arg1):
+
+                s = f"return {i.arg1}"
+
+            elif i.src and i.src.strip():
+
+                s = i.src.strip().rstrip(";")
+
+            elif i.arg1 is not None and not is_temp(i.arg1):
+
+                s = f"return {i.arg1}"
+
+            else:
+
+                s = "return"
         elif i.op == "assign" and i.result and not is_temp(i.result) and i.arg1 and is_literal(i.arg1) and i.src and any(op in i.src for op in ("*", "+", "-", "/", "%")):
             s = f"{i.result} = {i.arg1}"
         elif i.src and i.src.strip():
