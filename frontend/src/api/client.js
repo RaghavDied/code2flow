@@ -2,11 +2,11 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 const USE_MOCKS = import.meta.env.VITE_USE_MOCKS === 'true';
 const TIMEOUT_MS = 15000;
 
-const MOCK_FILES = {
-  '/tokens': 'tokens_ok.json',
-  '/ast': 'ast_ok.json',
-  '/generate': 'generate_ok.json',
-  '/optimize': 'optimize_ok.json',
+const MOCK_LOADERS = {
+  '/tokens': () => import('../mocks/tokens_ok.json'),
+  '/ast': () => import('../mocks/ast_ok.json'),
+  '/generate': () => import('../mocks/generate_ok.json'),
+  '/optimize': () => import('../mocks/optimize_ok.json'),
 };
 
 /** Build an envelope-shaped error so the UI handles it like a compile error. */
@@ -35,7 +35,11 @@ function normalise(json) {
 
 /** Load a mock response. Only used when VITE_USE_MOCKS=true. */
 async function loadMock(endpoint) {
-  const mod = await import(`../mocks/${MOCK_FILES[endpoint]}`);
+  const loader = MOCK_LOADERS[endpoint];
+  if (!loader) {
+    return errorEnvelope(`No mock available for ${endpoint}`);
+  }
+  const mod = await loader();
   console.warn(`[client] MOCK data used for ${endpoint}. Your code was NOT compiled.`);
   return normalise(mod.default);
 }
