@@ -1,0 +1,77 @@
+{
+  "functions": {
+    "main": {
+      "name": "main",
+      "params": [],
+      "instrs": [
+        {
+          "id": 1,
+          "op": "binop",
+          "result": "t1",
+          "arg1": "0",
+          "arg2": "0",
+          "operator": "!=",
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 2,
+          "src": "if (0)"
+        },
+        {
+          "id": 2,
+          "op": "if_false",
+          "result": null,
+          "arg1": "t1",
+          "arg2": null,
+          "operator": null,
+          "target": "L0",
+          "label": null,
+          "args": [],
+          "line": 2,
+          "src": "if (0)"
+        },
+        {
+          "id": 3,
+          "op": "call",
+          "result": null,
+          "arg1": "printf",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [
+            "\"then\""
+          ],
+          "line": 2,
+          "src": "printf(\"then\")"
+        },
+        {
+          "id": 4,
+          "op": "label",
+          "result": null,
+          "arg1": null,
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": "L0",
+          "args": [],
+          "line": 2,
+          "src": "if (0)"
+        },
+        {
+          "id": 5,
+          "op": "return",
+          "result": null,
+          "arg1": "0",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 3,
+          "src": "return 0"
+        }
+      ]
+    }
+  }
+}

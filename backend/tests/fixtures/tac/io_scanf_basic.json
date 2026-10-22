@@ -1,0 +1,81 @@
+{
+  "functions": {
+    "main": {
+      "name": "main",
+      "params": [],
+      "instrs": [
+        {
+          "id": 1,
+          "op": "call",
+          "result": null,
+          "arg1": "scanf",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [
+            "\"%d\"",
+            "&x"
+          ],
+          "line": 2,
+          "src": "scanf(\"%d\", &x)"
+        },
+        {
+          "id": 2,
+          "op": "binop",
+          "result": "t1",
+          "arg1": "x",
+          "arg2": "2",
+          "operator": "*",
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 3,
+          "src": "int y = x * 2"
+        },
+        {
+          "id": 3,
+          "op": "assign",
+          "result": "y",
+          "arg1": "t1",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 3,
+          "src": "int y = x * 2"
+        },
+        {
+          "id": 4,
+          "op": "call",
+          "result": null,
+          "arg1": "printf",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [
+            "\"%d\"",
+            "y"
+          ],
+          "line": 4,
+          "src": "printf(\"%d\", y)"
+        },
+        {
+          "id": 5,
+          "op": "return",
+          "result": null,
+          "arg1": "0",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 5,
+          "src": "return 0"
+        }
+      ]
+    }
+  }
+}

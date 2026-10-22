@@ -1,0 +1,49 @@
+{
+  "functions": {
+    "main": {
+      "name": "main",
+      "params": [],
+      "instrs": [
+        {
+          "id": 1,
+          "op": "assign",
+          "result": "x",
+          "arg1": "5",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 2,
+          "src": "x = 5"
+        },
+        {
+          "id": 2,
+          "op": "binop",
+          "result": "y",
+          "arg1": "x",
+          "arg2": "1",
+          "operator": "+",
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 3,
+          "src": "y = x + 1"
+        },
+        {
+          "id": 3,
+          "op": "return",
+          "result": null,
+          "arg1": "y",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 4,
+          "src": "return y"
+        }
+      ]
+    }
+  }
+}

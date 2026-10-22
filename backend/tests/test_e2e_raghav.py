@@ -94,3 +94,31 @@ def test_diagnostic_validation_and_roundtrip():
         Diagnostic("parser", "fatal", "x", 1, 1)
     with pytest.raises(ValueError):
         Diagnostic("parser", "error", "x", 0, 1)
+
+
+def test_real_pipeline_end_to_end_on_c_samples():
+    """Verify real pipeline (USE_MOCKS=False) integrates lexer, parser, semantic, IR, CFG, and metrics."""
+    import c2f.pipeline as P
+
+    old_mocks = P.USE_MOCKS
+    try:
+        P.USE_MOCKS = False
+        code = "int main() { int x = 0; while (x < 5) { printf(\"%d\", x); x++; } return 0; }"
+        res = P.run_pipeline(code, optimize=False)
+        assert res["ok"] is True
+        data = res["data"]
+        assert "main" in data["functions"]
+        assert data["ast"]["type"] == "Program"
+        assert "main" in data["tac"]
+        assert "main" in data["cfg"]
+        assert "main" in data["metrics"]
+        main_cfg = data["cfg"]["main"]
+        assert any(n["type"] == "start" for n in main_cfg["nodes"])
+        assert any(n["type"] == "end" for n in main_cfg["nodes"])
+        assert any(n["is_loop_header"] for n in main_cfg["nodes"])
+        assert any(e["is_back_edge"] for e in main_cfg["edges"])
+        metrics = data["metrics"]["main"]
+        assert metrics["loops"] == 1
+        assert metrics["cyclomatic_complexity"] >= 1
+    finally:
+        P.USE_MOCKS = old_mocks
