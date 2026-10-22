@@ -140,7 +140,13 @@ def test_optimize_preserves_behaviour_zero_arg_main(fixture_name, inputs):
 @pytest.mark.parametrize(
     "fixture_name,args",
     [
+        ("loop_with_dead_var", [0]),
+        ("loop_with_dead_var", [1]),
+        ("loop_with_dead_var", [2]),
         ("loop_with_dead_var", [5]),
+        ("loop_with_dead_var", [10]),
+        ("algebraic_simplification_basic", [-5]),
+        ("algebraic_simplification_basic", [0]),
         ("algebraic_simplification_basic", [5]),
     ],
 )
