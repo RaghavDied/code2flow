@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Set
 
 from c2f.ir import TacFunction, TacInstr
+from c2f.ir.tac import is_literal, is_temp
 
 from .basic_blocks import partition_into_basic_blocks
 from .loops import mark_loops_and_back_edges
@@ -140,53 +141,64 @@ def _determine_node_type(instrs: List[TacInstr]) -> str:
 
 
 def _format_label(instrs: List[TacInstr], node_type: str) -> str:
-    """Format box text. Decisions end with '?', statements joined by '\\n'."""
+    """Format box text. Decisions end with '?', statements joined by '\n'."""
     if not instrs:
         return ""
 
     if node_type == "decision":
         last = instrs[-1]
-        # Use src of condition
-        cond_text = last.src.strip()
+        cond_text = last.src.strip() if last.src else ""
+        if not cond_text and last.arg1:
+            cond_text = str(last.arg1)
         if cond_text.endswith(";"):
             cond_text = cond_text[:-1].strip()
         if not cond_text.endswith("?"):
             cond_text = f"{cond_text}?"
 
-        # Preceding statements in the same block if any
-        preceding = [
-            i.src.strip() for i in instrs[:-1]
-            if i.op not in ("label", "goto") and i.src.strip()
-        ]
-        # Deduplicate consecutive identical statements if needed
-        lines = []
-        for p in preceding:
-            p_clean = p.rstrip(";")
-            if p_clean and (not lines or lines[-1] != p_clean):
-                lines.append(p_clean)
+        preceding_instrs = [i for i in instrs[:-1] if i.op not in ("label", "goto")]
+        has_non_temp = any(not (i.result and is_temp(i.result)) for i in preceding_instrs)
+        lines: List[str] = []
+        for i in preceding_instrs:
+            if has_non_temp and i.result and is_temp(i.result):
+                continue
+            if i.op == "assign" and i.result and not is_temp(i.result) and i.arg1 and is_literal(i.arg1) and i.src and any(op in i.src for op in ("*", "+", "-", "/", "%")):
+                p = f"{i.result} = {i.arg1}"
+            elif i.src and i.src.strip():
+                p = i.src.strip().rstrip(";")
+            else:
+                p = f"{i.result} = {i.arg1}" if i.op == "assign" else i.op
+            if p and (not lines or lines[-1] != p):
+                lines.append(p)
 
         if lines:
             return "\n".join(lines) + "\n" + cond_text
         return cond_text
 
-    # Process or IO: collect statement source texts, omitting labels and jumps
+    has_non_temp = any(not (i.result and is_temp(i.result)) for i in instrs if i.op not in ("label", "goto"))
     stmt_lines: List[str] = []
     for i in instrs:
         if i.op in ("label", "goto"):
             continue
-        s = i.src.strip()
-        # Remove trailing semicolon for clean flowchart presentation
-        if s.endswith(";"):
-            s = s[:-1].strip()
+        if has_non_temp and i.result and is_temp(i.result):
+            continue
+        if i.op == "return":
+            s = f"return {i.arg1}" if i.arg1 is not None else "return"
+        elif i.op == "assign" and i.result and not is_temp(i.result) and i.arg1 and is_literal(i.arg1) and i.src and any(op in i.src for op in ("*", "+", "-", "/", "%")):
+            s = f"{i.result} = {i.arg1}"
+        elif i.src and i.src.strip():
+            s = i.src.strip()
+            if s.endswith(";"):
+                s = s[:-1].strip()
+        else:
+            s = f"{i.result} = {i.arg1}" if i.op == "assign" else i.op
+
         if s and (not stmt_lines or stmt_lines[-1] != s):
             stmt_lines.append(s)
 
     if not stmt_lines:
-        # Fallback if block only had jumps/labels
-        return instrs[0].src.strip() if instrs else "process"
+        return instrs[0].src.strip() if (instrs and instrs[0].src) else "process"
 
     return "\n".join(stmt_lines)
-
 
 def build_cfg(fn: TacFunction) -> Cfg:
     """Build a Control Flow Graph from a three-address code function."""

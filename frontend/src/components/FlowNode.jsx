@@ -43,7 +43,7 @@ export default function FlowNode({ data }) {
       }}
     >
       <Handle type="target" position={Position.Top} style={{ background: '#64748b' }} />
-      <div>{label}</div>
+      <div style={{ whiteSpace: "pre-wrap", lineHeight: "1.5" }}>{label}</div>
       <Handle type="source" position={Position.Bottom} style={{ background: '#64748b' }} />
     </div>
   );
