@@ -4,6 +4,12 @@ Lexer skips whitespace, ``//`` and ``/* */`` comments, and preprocessor
 lines starting with ``#``.  It never raises on bad input; it records a
 :class:`~c2f.common.Diagnostic` and continues.
 
+Integration Contract:
+---------------------
+Diagnostic Format (diagnostics.py):
+Kushan uses Raghav's Diagnostic dataclass to report lexical errors with
+1-based line and col so errors display uniformly across the whole application.
+
 Public API
 ----------
 tokenize(source: str) -> LexResult

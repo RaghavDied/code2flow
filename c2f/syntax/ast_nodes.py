@@ -4,6 +4,18 @@ Every node is a dataclass with ``line: int`` and ``col: int`` (1-based).
 Operators are source strings (``"+"``, ``"=="``, ``"&&"``, ``"!"``, ``"++"``, …).
 Absent optional children are ``None``.  Lists default to ``[]``.
 
+Integration Contract with Raghav (Semantic Checker & Diagnostics)
+-----------------------------------------------------------------
+1. Diagnostic Format (diagnostics.py):
+   Kushan uses Raghav's Diagnostic dataclass to report lexical and syntax errors
+   with 1-based line and col so errors display uniformly across the whole application.
+
+2. AST Validation:
+   Kushan's AST node dataclasses are validated and annotated by Raghav's semantic
+   checker (analyze). Expression nodes support in-place `.expr_type` annotation
+   ("int" | "float" | "char" | "void" | "string") without exposing it in dataclass
+   fields or AST JSON output.
+
 Hierarchy
 ---------
 Node

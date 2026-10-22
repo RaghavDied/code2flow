@@ -5,6 +5,16 @@ Owner: Kushan.
 Supports the full C subset from CONTRACTS.md section 5.  Panic-mode
 error recovery at ``;`` and ``}``.
 
+Integration Contract with Raghav (Semantic Checker & Diagnostics)
+-----------------------------------------------------------------
+1. Diagnostic Format (diagnostics.py):
+   Kushan uses Raghav's Diagnostic dataclass to report syntax errors with
+   1-based line and col so errors display uniformly across the whole application.
+
+2. AST Validation:
+   Kushan's AST node dataclasses are validated and annotated by Raghav's semantic
+   checker (analyze).
+
 Public API
 ----------
 parse(tokens: list[Token]) -> ParseResult

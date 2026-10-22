@@ -283,3 +283,52 @@ def test_error_recovery_bad_condition():
     res = parse(toks.tokens)
     assert len(res.errors) >= 1
     assert res.errors[0].phase == "parser"
+
+
+# ── Integration Contract: Diagnostic Format & AST Validation ──────────
+def test_diagnostic_format_compliance():
+    """Verify Kushan reports errors using Raghav's Diagnostic dataclass."""
+    res = quick_parse("void f() { if x > 0 { } }")
+    assert len(res.errors) >= 1
+    err = res.errors[0]
+    assert err.phase in ("lexer", "parser")
+    assert err.severity in ("error", "warning")
+    assert isinstance(err.message, str) and len(err.message) > 0
+    assert err.line >= 1
+    assert err.col >= 1
+    # Check that to_dict produces uniform JSON structure
+    d = err.to_dict()
+    assert set(d.keys()) == {"phase", "severity", "message", "line", "col"}
+
+
+def test_ast_validation_and_expr_type_annotation():
+    """Verify Kushan's AST nodes can be validated and annotated with .expr_type by Raghav's semantic checker."""
+    res = quick_parse("int main() { int x = 5; return x + 1; }")
+    assert res.errors == []
+    prog = res.ast
+
+    # Simulate Raghav's semantic checker (analyze) traversing and annotating the AST
+    main_fn = prog.functions[0]
+    ret_stmt = main_fn.body.statements[1]
+    binop = ret_stmt.value  # x + 1
+
+    # Before annotation: expr_type is None
+    assert binop.expr_type is None
+    assert binop.left.expr_type is None
+    assert binop.right.expr_type is None
+
+    # Semantic analysis annotates expressions in place
+    binop.left.expr_type = "int"
+    binop.right.expr_type = "int"
+    binop.expr_type = "int"
+
+    assert binop.expr_type == "int"
+    assert binop.left.expr_type == "int"
+
+    # Crucial contract check: .expr_type MUST NOT appear in the AST JSON (ast_to_dict)
+    d = ast_to_dict(prog)
+    binop_dict = d["functions"][0]["body"]["statements"][1]["value"]
+    assert "expr_type" not in binop_dict
+    assert "expr_type" not in binop_dict["left"]
+    assert "expr_type" not in binop_dict["right"]
+
