@@ -1,4 +1,6 @@
-from .lexer import LexResult, tokenize
-from .tokens import Token, TokenType
+"""c2f.lexer — tokenizer.  Owner: Kushan."""
 
-__all__ = ["tokenize", "Token", "TokenType", "LexResult"]
+from .lexer import LexResult, tokenize
+from .tokens import KEYWORDS, Token, TokenType
+
+__all__ = ["tokenize", "Token", "TokenType", "LexResult", "KEYWORDS"]
