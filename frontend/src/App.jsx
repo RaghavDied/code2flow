@@ -32,18 +32,6 @@ const tabStyle = (active) => ({
   fontSize: '13px',
 });
 
-const presetBtnStyle = (active) => ({
-  background: active ? '#0284c7' : '#334155',
-  color: active ? '#ffffff' : '#cbd5e1',
-  border: active ? '1px solid #38bdf8' : '1px solid #475569',
-  padding: '0.25rem 0.6rem',
-  borderRadius: '4px',
-  cursor: 'pointer',
-  fontSize: '11px',
-  fontWeight: '600',
-  transition: 'all 0.15s',
-});
-
 const fnTabStyle = (active) => ({
   background: active ? '#e0f2fe' : 'transparent',
   color: '#0f172a',
@@ -209,10 +197,6 @@ export default function App() {
   const optimizedGraph = forFn(result.optimizedCfg, activeFn);
   const showOptimized = viewMode === 'optimized';
 
-  const effectiveLeftWidth = isLeftCollapsed ? 0 : leftWidth;
-  const effectiveRightWidth = isRightCollapsed ? 0 : rightWidth;
-  const currentFcPercent = 100 - effectiveLeftWidth - effectiveRightWidth;
-
   return (
     <div style={{ fontFamily: 'sans-serif', height: '100vh', display: 'flex', flexDirection: 'column', margin: 0, padding: 0 }}>
       {/* Top Header */}
@@ -224,8 +208,6 @@ export default function App() {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '0.75rem',
           boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
         }}
       >
@@ -233,75 +215,11 @@ export default function App() {
           Code2Flow: Compiler-Based Code-to-Flowchart Generator with Code Optimisation
         </h1>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-          {/* Flowchart Area Resizer & Presets */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: '#0f172a', padding: '0.25rem 0.6rem', borderRadius: '6px' }}>
-            <span style={{ color: '#94a3b8', fontSize: '12px', fontWeight: 'bold' }}>Flowchart:</span>
-            <input
-              type="range"
-              min="30"
-              max="80"
-              value={Math.round(currentFcPercent)}
-              onChange={(e) => {
-                const targetFc = Number(e.target.value);
-                const remaining = 100 - targetFc;
-                setLeftWidth(Math.round(remaining * 0.55));
-                setRightWidth(Math.round(remaining * 0.45));
-                setIsLeftCollapsed(false);
-                setIsRightCollapsed(false);
-              }}
-              style={{ width: '85px', cursor: 'pointer', accentColor: '#38bdf8' }}
-              title="Slide to dynamically expand or contract the flowchart viewport"
-            />
-            <span style={{ color: '#38bdf8', fontSize: '11px', fontWeight: 'bold', minWidth: '32px' }}>
-              {Math.round(currentFcPercent)}%
-            </span>
-
-            <div style={{ display: 'flex', gap: '0.25rem', marginLeft: '0.3rem' }}>
-              <button
-                style={presetBtnStyle(currentFcPercent < 55 && !isRightCollapsed && !isLeftCollapsed)}
-                onClick={() => {
-                  setLeftWidth(28);
-                  setRightWidth(28);
-                  setIsLeftCollapsed(false);
-                  setIsRightCollapsed(false);
-                }}
-                title="Balanced layout (28% editor, 44% flowchart, 28% inspector)"
-              >
-                Default
-              </button>
-              <button
-                style={presetBtnStyle(currentFcPercent >= 55 && currentFcPercent < 75 && !isRightCollapsed)}
-                onClick={() => {
-                  setLeftWidth(20);
-                  setRightWidth(18);
-                  setIsLeftCollapsed(false);
-                  setIsRightCollapsed(false);
-                }}
-                title="Wide flowchart view (62% flowchart, 20% editor, 18% inspector)"
-              >
-                Wide
-              </button>
-              <button
-                style={presetBtnStyle(isRightCollapsed)}
-                onClick={() => {
-                  setLeftWidth(18);
-                  setIsLeftCollapsed(false);
-                  setIsRightCollapsed(true);
-                }}
-                title="Maximized flowchart view (82% flowchart, inspector collapsed)"
-              >
-                Max Focus
-              </button>
-            </div>
-          </div>
-
-          {/* View Mode Tabs */}
-          <div style={{ display: 'flex', gap: '0.35rem' }}>
-            <button style={tabStyle(viewMode === 'original')} onClick={() => setViewMode('original')}>Original</button>
-            <button style={tabStyle(viewMode === 'optimized')} onClick={() => setViewMode('optimized')}>Optimised</button>
-            <button style={tabStyle(viewMode === 'sidebyside')} onClick={() => setViewMode('sidebyside')}>Side-by-Side</button>
-          </div>
+        {/* View Mode Tabs */}
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button style={tabStyle(viewMode === 'original')} onClick={() => setViewMode('original')}>Original</button>
+          <button style={tabStyle(viewMode === 'optimized')} onClick={() => setViewMode('optimized')}>Optimised</button>
+          <button style={tabStyle(viewMode === 'sidebyside')} onClick={() => setViewMode('sidebyside')}>Side-by-Side</button>
         </div>
       </header>
 
@@ -323,7 +241,6 @@ export default function App() {
             <div style={{ flex: 1, padding: '0.5rem', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
                 <h3 style={{ margin: 0, fontSize: '13px', color: '#334155' }}>C Source Code Editor</h3>
-                <span style={{ fontSize: '11px', color: '#64748b' }}>({Math.round(leftWidth)}% width)</span>
               </div>
               <CodeEditor value={code} onChange={setCode} />
             </div>
@@ -345,7 +262,7 @@ export default function App() {
             zIndex: 10,
             userSelect: 'none',
           }}
-          title="Drag to resize Editor / Flowchart. Double click to toggle."
+          title="Drag to resize Editor / Flowchart. Double click to collapse/expand."
           onDoubleClick={() => setIsLeftCollapsed(!isLeftCollapsed)}
         >
           <div style={{ width: '2px', height: '24px', background: isDraggingLeft ? '#ffffff' : '#64748b', borderRadius: '1px' }} />
@@ -409,7 +326,7 @@ export default function App() {
             zIndex: 10,
             userSelect: 'none',
           }}
-          title="Drag to resize Flowchart / Inspector. Double click to collapse."
+          title="Drag to resize Flowchart / Inspector. Double click to collapse/expand."
           onDoubleClick={() => setIsRightCollapsed(!isRightCollapsed)}
         >
           <div style={{ width: '2px', height: '24px', background: isDraggingRight ? '#ffffff' : '#64748b', borderRadius: '1px' }} />
