@@ -13,7 +13,7 @@ from typing import List, Optional
 
 from c2f.common import Diagnostic, make_error
 
-USE_MOCKS = True
+USE_MOCKS = False
 _FIXTURES = Path(__file__).resolve().parents[1] / "tests" / "fixtures"
 
 
@@ -53,6 +53,10 @@ def run_tokens(source: str) -> dict:
     if USE_MOCKS:
         return _mock_gate(source) or _load("tokens_ok")
 
+    gate = _mock_gate(source)
+    if gate:
+        return gate
+
     from c2f.lexer import tokenize
 
     res = tokenize(source)
@@ -68,6 +72,10 @@ def run_ast(source: str) -> dict:
     """POST /api/ast."""
     if USE_MOCKS:
         return _mock_gate(source) or _load("ast_ok")
+
+    gate = _mock_gate(source)
+    if gate:
+        return gate
 
     from c2f.lexer import tokenize
     from c2f.syntax import ast_to_dict, parse
@@ -89,6 +97,10 @@ def run_pipeline(source: str, optimize: bool = False) -> dict:
     """POST /api/generate (optimize=False) and POST /api/optimize (optimize=True)."""
     if USE_MOCKS:
         return _mock_gate(source) or _load("optimize_ok" if optimize else "generate_ok")
+
+    gate = _mock_gate(source)
+    if gate:
+        return gate
 
     from c2f.cfg import build_cfg, cfg_to_dict
     from c2f.ir import generate_tac
