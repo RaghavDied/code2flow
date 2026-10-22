@@ -1,11 +1,16 @@
-"""Token definitions for the C-subset lexer (CONTRACTS section 4)."""
+"""Token types and Token dataclass (CONTRACTS.md section 4). Owner: Kushan.
+
+``TokenType`` member name equals member value. ``KEYWORDS`` maps C keyword
+strings to their ``TokenType``.  ``Token`` stores type, lexeme, line, col.
+"""
+from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
 
 
 class TokenType(str, Enum):
-    """All token kinds. Member name equals member value."""
+    """All token kinds.  Member name == value (section 4 contract)."""
 
     # Keywords
     KW_INT = "KW_INT"
@@ -24,7 +29,7 @@ class TokenType(str, Enum):
     KW_CONTINUE = "KW_CONTINUE"
     KW_RETURN = "KW_RETURN"
 
-    # Literals and names
+    # Literals / names
     IDENTIFIER = "IDENTIFIER"
     INT_LITERAL = "INT_LITERAL"
     FLOAT_LITERAL = "FLOAT_LITERAL"
@@ -53,7 +58,7 @@ class TokenType(str, Enum):
     AND = "AND"
     OR = "OR"
     NOT = "NOT"
-    AMP = "AMP"  # only so scanf("%d", &x) works
+    AMP = "AMP"          # only so scanf("%d", &x) works; '&' is otherwise unsupported
 
     # Punctuation
     LPAREN = "LPAREN"
@@ -72,7 +77,7 @@ class TokenType(str, Enum):
 
 @dataclass
 class Token:
-    """One lexical token. line and col are 1-based."""
+    """One lexical token.  line and col are 1-based."""
 
     type: TokenType
     lexeme: str
@@ -80,20 +85,21 @@ class Token:
     col: int
 
 
+# ── keyword lookup ────────────────────────────────────────────────────
 KEYWORDS: dict[str, TokenType] = {
-    "int": TokenType.KW_INT,
-    "float": TokenType.KW_FLOAT,
-    "char": TokenType.KW_CHAR,
-    "void": TokenType.KW_VOID,
-    "if": TokenType.KW_IF,
-    "else": TokenType.KW_ELSE,
-    "while": TokenType.KW_WHILE,
-    "do": TokenType.KW_DO,
-    "for": TokenType.KW_FOR,
-    "switch": TokenType.KW_SWITCH,
-    "case": TokenType.KW_CASE,
-    "default": TokenType.KW_DEFAULT,
-    "break": TokenType.KW_BREAK,
+    "int":      TokenType.KW_INT,
+    "float":    TokenType.KW_FLOAT,
+    "char":     TokenType.KW_CHAR,
+    "void":     TokenType.KW_VOID,
+    "if":       TokenType.KW_IF,
+    "else":     TokenType.KW_ELSE,
+    "while":    TokenType.KW_WHILE,
+    "do":       TokenType.KW_DO,
+    "for":      TokenType.KW_FOR,
+    "switch":   TokenType.KW_SWITCH,
+    "case":     TokenType.KW_CASE,
+    "default":  TokenType.KW_DEFAULT,
+    "break":    TokenType.KW_BREAK,
     "continue": TokenType.KW_CONTINUE,
-    "return": TokenType.KW_RETURN,
+    "return":   TokenType.KW_RETURN,
 }
