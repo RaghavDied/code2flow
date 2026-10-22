@@ -1,0 +1,184 @@
+{
+  "functions": {
+    "main": {
+      "name": "main",
+      "params": [],
+      "instrs": [
+        {
+          "id": 1,
+          "op": "binop",
+          "result": "t1",
+          "arg1": "2",
+          "arg2": "3",
+          "operator": "*",
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 2,
+          "src": "int a = 2 * 3"
+        },
+        {
+          "id": 2,
+          "op": "assign",
+          "result": "a",
+          "arg1": "t1",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 2,
+          "src": "int a = 2 * 3"
+        },
+        {
+          "id": 3,
+          "op": "binop",
+          "result": "t2",
+          "arg1": "a",
+          "arg2": "4",
+          "operator": "+",
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 3,
+          "src": "int b = a + 4"
+        },
+        {
+          "id": 4,
+          "op": "assign",
+          "result": "b",
+          "arg1": "t2",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 3,
+          "src": "int b = a + 4"
+        },
+        {
+          "id": 5,
+          "op": "assign",
+          "result": "unused",
+          "arg1": "99",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 4,
+          "src": "int unused = 99"
+        },
+        {
+          "id": 6,
+          "op": "binop",
+          "result": "t3",
+          "arg1": "1",
+          "arg2": "0",
+          "operator": "!=",
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 5,
+          "src": "if (1)"
+        },
+        {
+          "id": 7,
+          "op": "if_false",
+          "result": null,
+          "arg1": "t3",
+          "arg2": null,
+          "operator": null,
+          "target": "L0",
+          "label": null,
+          "args": [],
+          "line": 5,
+          "src": "if (1)"
+        },
+        {
+          "id": 8,
+          "op": "call",
+          "result": null,
+          "arg1": "printf",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [
+            "\"%d\"",
+            "b"
+          ],
+          "line": 5,
+          "src": "printf(\"%d\", b)"
+        },
+        {
+          "id": 9,
+          "op": "goto",
+          "result": null,
+          "arg1": null,
+          "arg2": null,
+          "operator": null,
+          "target": "L1",
+          "label": null,
+          "args": [],
+          "line": 5,
+          "src": "if (1)"
+        },
+        {
+          "id": 10,
+          "op": "label",
+          "result": null,
+          "arg1": null,
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": "L0",
+          "args": [],
+          "line": 6,
+          "src": "else"
+        },
+        {
+          "id": 11,
+          "op": "call",
+          "result": null,
+          "arg1": "printf",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [
+            "\"never\""
+          ],
+          "line": 6,
+          "src": "printf(\"never\")"
+        },
+        {
+          "id": 12,
+          "op": "label",
+          "result": null,
+          "arg1": null,
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": "L1",
+          "args": [],
+          "line": 7,
+          "src": "return 0"
+        },
+        {
+          "id": 13,
+          "op": "return",
+          "result": null,
+          "arg1": "0",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 7,
+          "src": "return 0"
+        }
+      ]
+    }
+  }
+}

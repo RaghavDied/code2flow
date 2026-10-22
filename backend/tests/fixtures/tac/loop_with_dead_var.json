@@ -1,0 +1,142 @@
+{
+  "functions": {
+    "main": {
+      "name": "main",
+      "params": [
+        "n"
+      ],
+      "instrs": [
+        {
+          "id": 1,
+          "op": "assign",
+          "result": "i",
+          "arg1": "0",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 2,
+          "src": "int i = 0"
+        },
+        {
+          "id": 2,
+          "op": "label",
+          "result": null,
+          "arg1": null,
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": "L0",
+          "args": [],
+          "line": 3,
+          "src": "while (i < n)"
+        },
+        {
+          "id": 3,
+          "op": "binop",
+          "result": "t1",
+          "arg1": "i",
+          "arg2": "n",
+          "operator": "<",
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 3,
+          "src": "i < n"
+        },
+        {
+          "id": 4,
+          "op": "if_false",
+          "result": null,
+          "arg1": "t1",
+          "arg2": null,
+          "operator": null,
+          "target": "L1",
+          "label": null,
+          "args": [],
+          "line": 3,
+          "src": "while (i < n)"
+        },
+        {
+          "id": 5,
+          "op": "assign",
+          "result": "junk",
+          "arg1": "7",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 4,
+          "src": "int junk = 7"
+        },
+        {
+          "id": 6,
+          "op": "binop",
+          "result": "t2",
+          "arg1": "i",
+          "arg2": "1",
+          "operator": "+",
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 5,
+          "src": "i = i + 1"
+        },
+        {
+          "id": 7,
+          "op": "assign",
+          "result": "i",
+          "arg1": "t2",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 5,
+          "src": "i = i + 1"
+        },
+        {
+          "id": 8,
+          "op": "goto",
+          "result": null,
+          "arg1": null,
+          "arg2": null,
+          "operator": null,
+          "target": "L0",
+          "label": null,
+          "args": [],
+          "line": 3,
+          "src": "while (i < n)"
+        },
+        {
+          "id": 9,
+          "op": "label",
+          "result": null,
+          "arg1": null,
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": "L1",
+          "args": [],
+          "line": 6,
+          "src": "while end"
+        },
+        {
+          "id": 10,
+          "op": "return",
+          "result": null,
+          "arg1": "i",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 6,
+          "src": "return i"
+        }
+      ]
+    }
+  }
+}

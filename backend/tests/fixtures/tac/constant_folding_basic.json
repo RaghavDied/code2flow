@@ -1,0 +1,36 @@
+{
+  "functions": {
+    "main": {
+      "name": "main",
+      "params": [],
+      "instrs": [
+        {
+          "id": 1,
+          "op": "binop",
+          "result": "t1",
+          "arg1": "2",
+          "arg2": "3",
+          "operator": "*",
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 2,
+          "src": "t1 = 2 * 3"
+        },
+        {
+          "id": 2,
+          "op": "return",
+          "result": null,
+          "arg1": "t1",
+          "arg2": null,
+          "operator": null,
+          "target": null,
+          "label": null,
+          "args": [],
+          "line": 2,
+          "src": "return t1"
+        }
+      ]
+    }
+  }
+}
